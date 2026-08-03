@@ -1,0 +1,721 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SITI SHAMIRAH · Star Wars Neon CV</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Montserrat:wght@400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* ===== STAR WARS · NEON SPACE THEME ===== */
+    :root {
+      --primary: #00f0ff;        /* cyan glow */
+      --primary-dark: #0099cc;
+      --primary-glow: 0 0 12px rgba(0, 240, 255, 0.8);
+      --secondary: #ff66ff;      /* magenta */
+      --secondary-glow: 0 0 12px rgba(255, 102, 255, 0.7);
+      --accent: #ffd700;         /* gold / yellow */
+      --accent-glow: 0 0 12px rgba(255, 215, 0, 0.6);
+      --dark: #0a0a12;
+      --darker: #050509;
+      --light: #e0e0e0;
+      --gray: #888;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--darker);
+      background-image: 
+        radial-gradient(ellipse at 20% 30%, rgba(0, 240, 255, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 70%, rgba(255, 102, 255, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 100%, rgba(255, 215, 0, 0.04) 0%, transparent 40%);
+      color: var(--light);
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1.6;
+      padding-top: 70px;
+      font-size: 16px;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: var(--primary); color: var(--darker); }
+
+    /* scroll progress - gold/cyan */
+    .scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      width: 0; height: 3px;
+      background: linear-gradient(to right, var(--primary), var(--secondary), var(--accent));
+      z-index: 9999;
+      box-shadow: 0 0 15px var(--primary);
+      transition: width 0.1s ease;
+    }
+
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: var(--dark); }
+    ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 6px; box-shadow: var(--primary-glow); }
+
+    /* navigation - star wars inspired */
+    nav {
+      background: rgba(5, 5, 12, 0.94);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 3rem;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(0, 240, 255, 0.25);
+      backdrop-filter: blur(12px);
+      transition: var(--transition);
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.05);
+    }
+    nav.scrolled { padding: 0.8rem 3rem; box-shadow: 0 0 40px rgba(0, 240, 255, 0.15); border-bottom-color: var(--secondary); }
+    nav .logo {
+      font-size: 1.6rem;
+      font-weight: 900;
+      font-family: 'Orbitron', monospace;
+      color: var(--accent);
+      text-shadow: var(--accent-glow), 0 0 30px rgba(255, 215, 0, 0.2);
+      cursor: pointer;
+      letter-spacing: 2px;
+      transition: var(--transition);
+    }
+    nav .logo:hover { text-shadow: 0 0 30px var(--accent), 0 0 60px var(--secondary); }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+    nav ul li a {
+      color: var(--light);
+      text-decoration: none;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      transition: var(--transition);
+      padding: 0.5rem 0;
+      position: relative;
+      cursor: pointer;
+    }
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: var(--transition);
+      box-shadow: var(--accent-glow);
+    }
+    nav ul li a:hover::after,
+    nav ul li a.active::after { width: 100%; }
+    nav ul li a:hover,
+    nav ul li a.active { color: var(--accent); text-shadow: var(--accent-glow); }
+
+    .hamburger { display: none; flex-direction: column; cursor: pointer; gap: 5px; }
+    .hamburger div {
+      width: 25px; height: 2px;
+      background: var(--accent);
+      transition: var(--transition);
+      box-shadow: var(--accent-glow);
+    }
+
+    /* sections */
+    section {
+      display: none;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.5s ease;
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 40px 30px;
+      min-height: 70vh;
+    }
+    section.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    #hero {
+      display: flex !important;
+      opacity: 1 !important;
+      transform: none !important;
+      min-height: 80vh;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 900;
+      font-family: 'Orbitron', monospace;
+      color: var(--accent);
+      text-shadow: var(--accent-glow), 0 0 30px rgba(255, 215, 0, 0.15);
+      display: inline-block;
+      position: relative;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(to right, var(--primary), var(--secondary), var(--accent));
+      box-shadow: 0 0 20px var(--primary);
+    }
+    .section-content {
+      background: rgba(10, 10, 22, 0.75);
+      border: 1px solid rgba(0, 240, 255, 0.15);
+      padding: 25px;
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4), inset 0 0 40px rgba(0, 240, 255, 0.02);
+      margin-bottom: 20px;
+      transition: var(--transition);
+    }
+    .section-content:hover {
+      border-color: var(--accent);
+      box-shadow: 0 15px 40px rgba(0, 240, 255, 0.12), 0 0 60px rgba(255, 215, 0, 0.04);
+      transform: translateY(-3px);
+    }
+
+    /* hero */
+    .hero-title {
+      font-size: 3.5rem;
+      font-family: 'Orbitron', monospace;
+      color: var(--accent);
+      text-shadow: var(--accent-glow), 0 0 40px rgba(255, 215, 0, 0.2);
+      animation: fadeInUp 1s ease forwards;
+      letter-spacing: 3px;
+    }
+    .hero-subtitle {
+      font-size: 1.5rem;
+      color: var(--primary);
+      text-shadow: var(--primary-glow);
+      margin: 10px 0;
+      animation: fadeInUp 1s ease 0.3s forwards;
+    }
+    .typing-text {
+      font-size: 1.1rem;
+      color: var(--secondary);
+      font-family: 'Share Tech Mono', monospace;
+      text-shadow: var(--secondary-glow);
+      min-height: 40px;
+      animation: fadeInUp 1s ease 0.6s forwards;
+    }
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 1.2rem;
+      background: var(--accent);
+      margin-left: 4px;
+      animation: blink 0.7s infinite;
+      box-shadow: var(--accent-glow);
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    @keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+    .hero-image-container {
+      width: 180px;
+      height: 180px;
+      margin: 25px auto;
+      position: relative;
+      animation: fadeInScale 1s ease 0.9s forwards;
+    }
+    @keyframes fadeInScale { from{opacity:0;transform:scale(0.8)} to{opacity:1;transform:scale(1)} }
+    .hero-image-container::before {
+      content: '';
+      position: absolute;
+      width: 140%;
+      height: 140%;
+      top: -20%; left: -20%;
+      background: conic-gradient(from 0deg, var(--primary), var(--secondary), var(--accent), var(--primary));
+      border-radius: 50%;
+      filter: blur(30px);
+      opacity: 0.5;
+      animation: rotate 12s linear infinite;
+      z-index: -1;
+    }
+    @keyframes rotate { 0%{transform:rotate(0)} 100%{transform:rotate(360deg)} }
+    .hero-image {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid var(--accent);
+      box-shadow: 0 0 40px rgba(255, 215, 0, 0.3), 0 0 80px rgba(0, 240, 255, 0.15);
+      transition: var(--transition);
+    }
+    .hero-image:hover { transform: scale(1.05); border-color: var(--primary); box-shadow: var(--primary-glow), 0 0 60px var(--secondary); }
+
+    /* lists */
+    .list {
+      list-style: none;
+      padding-left: 0;
+    }
+    .list li {
+      padding-left: 28px;
+      margin-bottom: 10px;
+      position: relative;
+      transition: var(--transition);
+    }
+    .list li:hover { color: var(--accent); transform: translateX(6px); text-shadow: var(--accent-glow); }
+    .list li::before {
+      content: '◆';
+      position: absolute;
+      left: 2px;
+      color: var(--secondary);
+      font-size: 0.7rem;
+      text-shadow: var(--secondary-glow);
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .skill-tag {
+      background: rgba(0, 200, 255, 0.06);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      color: #cceeff;
+      padding: 0.2rem 0.9rem;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      transition: 0.2s;
+      font-family: 'Share Tech Mono', monospace;
+    }
+    .skill-tag:hover {
+      background: rgba(255, 215, 0, 0.08);
+      border-color: var(--accent);
+      box-shadow: var(--accent-glow);
+      color: var(--accent);
+    }
+
+    .terminal {
+      background: rgba(0, 0, 0, 0.85);
+      border: 1px solid var(--secondary);
+      padding: 18px;
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--primary);
+      border-radius: 12px;
+      margin: 15px 0;
+      box-shadow: 0 0 30px rgba(255, 102, 255, 0.05);
+    }
+    .terminal-prompt { color: var(--accent); text-shadow: var(--accent-glow); }
+
+    .view-btn {
+      background: transparent;
+      color: var(--accent);
+      border: 2px solid var(--accent);
+      padding: 3px 14px;
+      font-size: 0.7rem;
+      font-family: 'Share Tech Mono', monospace;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-left: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 28px;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
+    }
+    .view-btn:hover {
+      background: var(--accent);
+      color: var(--darker);
+      box-shadow: var(--accent-glow);
+      transform: translateY(-2px);
+    }
+
+    .publication-link {
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      display: inline-block;
+      margin: 4px 4px 0 0;
+      transition: var(--transition);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.05);
+    }
+    .publication-link:hover {
+      background: var(--primary);
+      color: var(--darker);
+      box-shadow: var(--primary-glow);
+    }
+
+    .social-links {
+      text-align: center;
+      margin: 30px 0;
+    }
+    .social-links a {
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      padding: 8px 18px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      margin: 0 8px;
+      display: inline-block;
+      transition: var(--transition);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.05);
+    }
+    .social-links a:hover {
+      background: var(--primary);
+      color: var(--darker);
+      box-shadow: var(--primary-glow);
+      transform: translateY(-3px);
+    }
+
+    .ref-item {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.5rem 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 215, 0, 0.15);
+    }
+    .ref-item strong { color: var(--accent); text-shadow: var(--accent-glow); }
+    .ref-item span { color: #a0b8dd; font-size: 0.8rem; display: block; }
+
+    /* mobile */
+    @media (max-width: 800px) {
+      body { padding-top: 60px; }
+      nav { padding: 0.8rem 1.2rem; }
+      nav ul {
+        position: fixed;
+        top: 60px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 60px);
+        background: rgba(5, 5, 12, 0.98);
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+        padding-top: 30px;
+        transition: var(--transition);
+        border-top: 1px solid rgba(255, 215, 0, 0.15);
+      }
+      nav ul.active { left: 0; }
+      nav ul li a { font-size: 1rem; }
+      .hamburger { display: flex; }
+      .hamburger.active div:nth-child(1) { transform: rotate(-45deg) translate(-5px, 5px); }
+      .hamburger.active div:nth-child(2) { opacity: 0; }
+      .hamburger.active div:nth-child(3) { transform: rotate(45deg) translate(-5px, -5px); }
+      section { padding: 20px 15px; margin: 20px auto; min-height: auto; }
+      .hero-title { font-size: 2.2rem; }
+      .hero-subtitle { font-size: 1.1rem; }
+      .hero-image-container { width: 140px; height: 140px; }
+      .section-title { font-size: 1.6rem; }
+      .social-links a { margin: 4px; padding: 6px 12px; font-size: 0.75rem; }
+    }
+    @media (max-width: 500px) {
+      .hero-title { font-size: 1.8rem; }
+      .hero-image-container { width: 110px; height: 110px; }
+      .section-title { font-size: 1.3rem; }
+    }
+
+    /* modal - lightbox */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 2000;
+      backdrop-filter: blur(6px);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal img {
+      max-width: 90%;
+      max-height: 90vh;
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      box-shadow: 0 0 60px rgba(255, 215, 0, 0.3), 0 0 120px rgba(0, 240, 255, 0.1);
+    }
+    .modal .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: var(--accent);
+      font-size: 2.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+      text-shadow: var(--accent-glow);
+    }
+    .modal .close-btn:hover { color: var(--primary); transform: rotate(90deg); }
+
+    /* particles */
+    #particles-js {
+      position: fixed;
+      width: 100%; height: 100%;
+      z-index: -2;
+    }
+    .binary-rain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.06;
+    }
+    .binary-digit {
+      position: absolute;
+      color: var(--accent);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 14px;
+      animation: fall linear infinite;
+    }
+    @keyframes fall { to { transform: translateY(100vh); opacity: 0; } }
+  </style>
+</head>
+<body>
+
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <div id="particles-js"></div>
+  <div class="binary-rain" id="binaryRain"></div>
+
+  <nav id="navbar">
+    <div class="logo" onclick="showSection('hero')">✦ SHAM</div>
+    <ul class="nav-links">
+      <li><a class="nav-link active" data-section="hero">Home</a></li>
+      <li><a class="nav-link" data-section="about">About</a></li>
+      <li><a class="nav-link" data-section="education">Education</a></li>
+      <li><a class="nav-link" data-section="skills">Skills</a></li>
+      <li><a class="nav-link" data-section="achievements">Achievements</a></li>
+      <li><a class="nav-link" data-section="contact">Contact</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <div></div><div></div><div></div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero" class="active">
+    <div class="hero-content">
+      <h1 class="hero-title">SITI SHAMIRAH</h1>
+      <p class="hero-subtitle">Computer Engineer · Web Developer</p>
+      <div class="typing-text"><span id="typingText"></span><span class="cursor"></span></div>
+      <div class="hero-image-container">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%231a1a3a'/%3E%3Ccircle cx='100' cy='80' r='40' fill='%234a6fa5'/%3E%3Ccircle cx='100' cy='80' r='30' fill='%236a8fc5'/%3E%3Ccircle cx='70' cy='60' r='6' fill='%23f0f0ff'/%3E%3Ccircle cx='130' cy='60' r='6' fill='%23f0f0ff'/%3E%3Cpath d='M70 120 Q100 150 130 120' stroke='%23f0f0ff' stroke-width='6' fill='none' stroke-linecap='round' /%3E%3C/svg%3E" alt="Siti Shamirah" class="hero-image">
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-header"><h2 class="section-title">About Me</h2></div>
+    <div class="section-content">
+      <p>Motivated Computer Engineering graduate from Universiti Malaysia Perlis (UniMAP) with a strong foundation in software development, embedded systems, and web technologies. Passionate about leveraging technology to solve real-world problems. Experienced in developing responsive websites, IoT systems, and data visualization.</p>
+    </div>
+    <div class="terminal">
+      <div class="terminal-content">
+        <span class="terminal-prompt">Status :</span> Fresh Graduate · Computer Engineering<br>
+        <span class="terminal-prompt">Interests :</span> Web Dev · IoT · Embedded Systems<br>
+        <span class="terminal-prompt">Motto :</span> Build, Break, Innovate.
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="section-header"><h2 class="section-title">Education</h2></div>
+    <div class="section-content">
+      <strong>Bachelor of Computer Engineering</strong><br>
+      Universiti Malaysia Perlis (UniMAP) · 2021 – 2025<br>
+      <em>Dean's List for 7 semesters</em>
+    </div>
+    <div class="section-content">
+      <strong>Malaysian Higher Certificate (STPM)</strong><br>
+      Kolej Tingkatan Enam Seri Puteri · 2019 – 2021
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-header"><h2 class="section-title">Skills & Projects</h2></div>
+    <div class="section-content">
+      <h3 style="color:var(--accent);margin-bottom:10px;text-shadow:var(--accent-glow);">Technical Skills</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">Python</span><span class="skill-tag">LabView</span>
+        <span class="skill-tag">Power BI</span><span class="skill-tag">PHP</span>
+        <span class="skill-tag">HTML</span><span class="skill-tag">SQL</span>
+        <span class="skill-tag">Multisim</span><span class="skill-tag">Verilog</span>
+        <span class="skill-tag">Arduino</span><span class="skill-tag">MS Office</span>
+        <span class="skill-tag">CSS</span><span class="skill-tag">LT Spice</span>
+        <span class="skill-tag">JavaScript</span>
+      </div>
+    </div>
+    <div class="section-content">
+      <h3 style="color:var(--accent);margin-bottom:10px;text-shadow:var(--accent-glow);">Projects</h3>
+      <ul class="list">
+        <li><strong>Web Developer Intern</strong> – Vozz Software Solution (responsive web apps)</li>
+        <li><strong>Embedded System Design</strong> – UniMAP (Arduino, sensor integration)</li>
+        <li><strong>Netflix Dataset Dashboard</strong> – Looker Studio</li>
+        <li><strong>Water Cooler with NTC Thermistor</strong> – NI LabView</li>
+        <li><strong>Bluetooth Home Automation</strong> – HC-05, STC12</li>
+        <li><strong>IoT Watering System</strong> – ESP8266</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ACHIEVEMENTS -->
+  <section id="achievements">
+    <div class="section-header"><h2 class="section-title">Achievements</h2></div>
+    <div class="section-content">
+      <ul class="list">
+        <li>🏆 Dean's List – 7 semesters (2020–2024)</li>
+        <li>📋 Exco Protocol – MYSTEM Club</li>
+        <li>📋 Exco Team Secretary – Perak Youth Council (MKBBT)</li>
+        <li>🎤 Deputy Director – Sembang Santai Program</li>
+        <li>🎤 Instructor – IEEE R10 SPNIC x TDP International Symposium</li>
+      </ul>
+    </div>
+    <div class="section-content">
+      <h3 style="color:var(--accent);text-shadow:var(--accent-glow);">Certifications & Workshops</h3>
+      <ul class="list">
+        <li>IEEE R10 SPNIC x TDP International Symposium on Computing</li>
+        <li>Design Thinking Workshop – Yamanashi University (virtual)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-header"><h2 class="section-title">Contact</h2></div>
+    <div class="section-content">
+      <p><strong>Email:</strong> sitishamirah123@gmail.com<br>
+      <strong>Phone:</strong> +601116730940<br>
+      <strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/siti-shamira" target="_blank" style="color:var(--accent);text-shadow:var(--accent-glow);">linkedin.com/in/siti-shamira</a></p>
+    </div>
+    <div class="section-content">
+      <h3 style="color:var(--accent);text-shadow:var(--accent-glow);">Reference</h3>
+      <div class="ref-item">
+        <strong>DR. ROZMIE RAZIF OTHMAN</strong>
+        <span><i class="fas fa-envelope" style="font-size:0.7rem;margin-right:4px;"></i> rozmie@unimap.edu.my</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- footer social -->
+  <div class="social-links">
+    <a href="https://www.linkedin.com/in/siti-shamira" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+    <a href="mailto:sitishamirah123@gmail.com"><i class="fas fa-envelope"></i> Email</a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    // ---- navigation ----
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('section');
+    const hamburger = document.getElementById('hamburger');
+    const navUl = document.querySelector('.nav-links');
+
+    function showSection(id) {
+      sections.forEach(s => {
+        s.classList.remove('active');
+        s.style.display = 'none';
+      });
+      const target = document.getElementById(id);
+      if (target) {
+        target.style.display = 'block';
+        setTimeout(() => target.classList.add('active'), 20);
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.dataset.section === id) link.classList.add('active');
+        });
+        hamburger.classList.remove('active');
+        navUl.classList.remove('active');
+        const navH = document.getElementById('navbar').offsetHeight;
+        window.scrollTo({ top: target.offsetTop - navH - 10, behavior: 'smooth' });
+      }
+    }
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const id = link.dataset.section;
+        showSection(id);
+      });
+    });
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navUl.classList.toggle('active');
+    });
+
+    document.getElementById('hero').style.display = 'flex';
+
+    // ---- scroll progress ----
+    window.addEventListener('scroll', () => {
+      const wh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (window.scrollY / wh) * 100;
+      document.getElementById('scrollProgress').style.width = scrolled + '%';
+      const nav = document.getElementById('navbar');
+      if (window.scrollY > 50) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+    });
+
+    // ---- typing ----
+    const texts = ["Computer Engineer", "Web Developer", "Embedded Systems Enthusiast", "IoT Explorer"];
+    let ti = 0, ci = 0, del = false;
+    const el = document.getElementById('typingText');
+    function type() {
+      const cur = texts[ti];
+      if (del) { el.textContent = cur.substring(0, ci - 1); ci--; }
+      else { el.textContent = cur.substring(0, ci + 1); ci++; }
+      let speed = del ? 40 : 100;
+      if (!del && ci === cur.length) { speed = 1800; del = true; }
+      else if (del && ci === 0) { del = false; ti = (ti + 1) % texts.length; speed = 400; }
+      setTimeout(type, speed);
+    }
+    setTimeout(type, 800);
+
+    // ---- particles ----
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 70, density: { enable: true, value_area: 800 } },
+        color: { value: "#ffd700" },
+        shape: { type: "circle" },
+        opacity: { value: 0.35, random: true },
+        size: { value: 2.5, random: true },
+        line_linked: { enable: true, distance: 150, color: "#00f0ff", opacity: 0.12, width: 1 },
+        move: { enable: true, speed: 1.8, direction: "none", random: true, out_mode: "out" }
+      },
+      interactivity: {
+        events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" } }
+      }
+    });
+
+    // ---- binary rain ----
+    const rain = document.getElementById('binaryRain');
+    for (let i = 0; i < 35; i++) {
+      const d = document.createElement('div');
+      d.className = 'binary-digit';
+      d.textContent = Math.random() > 0.5 ? '1' : '0';
+      d.style.left = Math.random() * 100 + 'vw';
+      d.style.animationDuration = (Math.random() * 10 + 6) + 's';
+      d.style.animationDelay = (Math.random() * 6) + 's';
+      rain.appendChild(d);
+    }
+  </script>
+</body>
+</html>
+```
